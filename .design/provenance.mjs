@@ -1,0 +1,5 @@
+﻿import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+const root='.design';const promptImage='target.png';
+const origins=JSON.parse(await fs.readFile(root+'/image-origins.json','utf8'));
+await fs.writeFile(root+'/asset-provenance.json',JSON.stringify({generated:[{path:'public/images/courtyard.png',tool:'Built-in image_gen',use:'Illustrative fictional demo property',promptEmbedded:true},{path:'.design/target.png',tool:'Built-in image_gen',width:1536,height:1024,use:'Directional UI concept; never shipped as flattened interface',promptEmbedded:true}],stock:Object.entries(origins).map(([name,id])=>({path:`public/images/${name}.jpg`,source:`https://images.unsplash.com/${id}?auto=format&fit=crop&w=1400&q=85`,use:'Illustrative stock photography; not represented as this fictional property',originEmbedded:true})),fonts:{families:['Cormorant Garamond','DM Sans'],source:'Google Fonts',licenseFiles:['public/fonts/licenses/cormorantgaramond-OFL.txt','public/fonts/licenses/dmsans-OFL.txt']}},null,2));

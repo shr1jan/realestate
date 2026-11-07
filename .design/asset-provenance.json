@@ -1,0 +1,73 @@
+{
+  "generated": [
+    {
+      "path": "public/images/courtyard.png",
+      "tool": "Built-in image_gen",
+      "use": "Illustrative fictional demo property",
+      "promptEmbedded": true
+    },
+    {
+      "path": ".design/target.png",
+      "tool": "Built-in image_gen",
+      "width": 1536,
+      "height": 1024,
+      "use": "Directional UI concept; never shipped as flattened interface",
+      "promptEmbedded": true
+    }
+  ],
+  "stock": [
+    {
+      "path": "public/images/house-2.jpg",
+      "source": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=85",
+      "use": "Illustrative stock photography; not represented as this fictional property",
+      "originEmbedded": true
+    },
+    {
+      "path": "public/images/house-3.jpg",
+      "source": "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=85",
+      "use": "Illustrative stock photography; not represented as this fictional property",
+      "originEmbedded": true
+    },
+    {
+      "path": "public/images/house-4.jpg",
+      "source": "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1400&q=85",
+      "use": "Illustrative stock photography; not represented as this fictional property",
+      "originEmbedded": true
+    },
+    {
+      "path": "public/images/house-5.jpg",
+      "source": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85",
+      "use": "Illustrative stock photography; not represented as this fictional property",
+      "originEmbedded": true
+    },
+    {
+      "path": "public/images/living.jpg",
+      "source": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=85",
+      "use": "Illustrative stock photography; not represented as this fictional property",
+      "originEmbedded": true
+    },
+    {
+      "path": "public/images/kitchen.jpg",
+      "source": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1400&q=85",
+      "use": "Illustrative stock photography; not represented as this fictional property",
+      "originEmbedded": true
+    },
+    {
+      "path": "public/images/bedroom.jpg",
+      "source": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1400&q=85",
+      "use": "Illustrative stock photography; not represented as this fictional property",
+      "originEmbedded": true
+    }
+  ],
+  "fonts": {
+    "families": [
+      "Cormorant Garamond",
+      "DM Sans"
+    ],
+    "source": "Google Fonts",
+    "licenseFiles": [
+      "public/fonts/licenses/cormorantgaramond-OFL.txt",
+      "public/fonts/licenses/dmsans-OFL.txt"
+    ]
+  }
+}
