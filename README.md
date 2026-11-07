@@ -39,7 +39,13 @@ The app supports anonymous property browsing when the Site audience is made publ
 
 `npx tsc --noEmit` checks types. `scripts/check-flows.mjs` exercises a fresh local database and the first-admin setup, then the listing lifecycle, permissions, saves, uploads and enquiries. It intentionally creates local test data; it is a first-setup integration check, not a repeatable production command.
 
+For the regression suite, start the loopback-only API runner with `node node_modules/vite/bin/vite.js --config scripts/vite/qa.config.ts --port 5175`, then run `node scripts/check-regressions.mjs`. This runner accepts synthetic identity headers so account isolation can be tested; it is a local test configuration and is never used for production. Use an initialized local database with `local_seedy` as its administrator. The suite writes clearly named QA listings and enquiries and emits cleanup SQL under `.design/refinement/`. The separate runner avoids a Windows Wrangler proxy restart issue during rejected-body tests; browser QA uses the built production Worker.
+
+Listing updates include `expectedUpdatedAt` from the editor's loaded record. A stale write receives HTTP 409 rather than overwriting another edit. Saved counts and lists include only published homes. JSON endpoints reject malformed or oversized input with client errors, and photo-upload parsing errors remain JSON responses.
+
 `.design/browser-check.mjs` records interactive browser QA using the installed design skill's local browser runner. Captures and the visual evidence receipt are under `.design/final/`. QA captures are excluded from Git and deployment assets. `DESIGN.md` records the implemented system.
+
+The latest bug-fix/refinement pass is recorded under `.design/refinement/`: 31 API regressions, 23 interactive browser checks and 29 final production layout/API checks. Original release captures under `.design/final/` remain as the visual baseline.
 
 ## Before public launch
 

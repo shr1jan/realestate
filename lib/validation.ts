@@ -7,4 +7,7 @@ export const listingSchema = z.object({
   description: z.string().trim().min(30).max(10000), features: z.array(z.string().trim().min(1).max(100)).max(30), images: z.array(image).min(1, "Add at least one photo.").max(20),
   status: z.enum(["published", "draft", "archived"]), featured: z.boolean(), demo: z.boolean(),
 });
-export const inquirySchema = z.object({ listingId: z.string().min(1).max(100), name: z.string().trim().min(2).max(100), email: z.string().trim().email().max(200), phone: z.string().trim().max(40), message: z.string().trim().min(10).max(3000) });
+export const inquirySchema = z.object({ listingId: z.string().min(1).max(100), name: z.string().trim().min(2,"Enter your full name.").max(100), email: z.string().trim().email("Enter a valid email address.").max(200).transform(v => v.toLowerCase()), phone: z.string().trim().max(40), message: z.string().trim().min(10,"Add a message of at least 10 characters.").max(3000) });
+export function validationFields(error: z.ZodError) {
+  return Object.fromEntries(Object.entries(error.flatten().fieldErrors).map(([key, values]) => [key, values?.[0] || "Check this field."]));
+}

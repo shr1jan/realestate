@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const base=process.env.CHECK_ORIGIN||'http://127.0.0.1:5173';
 const production=base.endsWith('5174');
-const folder=production?'.design/final':'.design/review';
+const folder=process.env.CHECK_OUTPUT||(production?'.design/final':'.design/review');
 await fs.mkdir(folder,{recursive:true});
 const b=await Browser.launch();const page=await b.newPage({width:1536,height:1024});
 const checks=[];

@@ -1,4 +1,6 @@
-# Final review
+# Initial release review
+
+This note records the initial release at `c5d7f64`. The later refinement pass is documented in `.design/refinement/REVIEW.md` and its visual evidence receipt.
 
 Disposition: ship (independent Impeccable finish reviewer).
 

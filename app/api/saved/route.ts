@@ -1,14 +1,14 @@
 import { and, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { savedHomes } from "@/db/schema";
-import { apiError, ApiError, getProperty, sameOrigin, viewer } from "@/lib/server";
+import { apiError, ApiError, getProperty, readJson, sameOrigin, viewer } from "@/lib/server";
 export async function POST(request: Request) {
   try {
     sameOrigin(request);
     const user = await viewer();
     if (!user) throw new ApiError("Sign in to save this home.", 401);
-    const { listingId, saved } = await request.json() as { listingId?: unknown; saved?: unknown };
-    if (typeof listingId !== "string" || typeof saved !== "boolean") throw new ApiError("Invalid saved home.");
+    const { listingId, saved } = await readJson(request);
+    if (typeof listingId !== "string" || listingId.length > 100 || !listingId || typeof saved !== "boolean") throw new ApiError("Invalid saved home.");
     const db = getDb();
     if (saved) {
       if (!await getProperty(listingId)) throw new ApiError("This home is no longer available.", 404);

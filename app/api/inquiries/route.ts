@@ -1,20 +1,19 @@
-import { and, count, eq, gt } from "drizzle-orm";
-import { getDb } from "@/db";
-import { inquiries } from "@/db/schema";
-import { inquirySchema } from "@/lib/validation";
-import { apiError, ApiError, getProperty, sameOrigin } from "@/lib/server";
+import { env } from "cloudflare:workers";
+import { inquirySchema, validationFields } from "@/lib/validation";
+import { apiError, ApiError, getProperty, readJson, sameOrigin } from "@/lib/server";
 export async function POST(request: Request) {
   try {
     sameOrigin(request);
-    const body = await request.json() as { website?: unknown };
+    const body = await readJson(request);
     if (body.website) return Response.json({ success: true });
     const parsed = inquirySchema.safeParse(body);
-    if (!parsed.success) throw new ApiError(parsed.error.issues[0].message);
+    if (!parsed.success) throw new ApiError("Check your enquiry details.",400,validationFields(parsed.error));
     if (!await getProperty(parsed.data.listingId)) throw new ApiError("This home is no longer available.", 404);
-    const db = getDb();
-    const [recent] = await db.select({ total: count() }).from(inquiries).where(and(eq(inquiries.email, parsed.data.email), gt(inquiries.createdAt, Date.now() - 3600000)));
-    if (recent.total >= 5) throw new ApiError("You’ve sent a few messages recently. Please try again in an hour.", 429);
-    await db.insert(inquiries).values({ ...parsed.data, id: crypto.randomUUID(), createdAt: Date.now() });
+    const data = parsed.data; const now = Date.now();
+    // Count and insert in the same statement so simultaneous submissions respect the limit.
+    const result = await env.DB!.prepare("INSERT INTO inquiries (id,listing_id,name,email,phone,message,created_at) SELECT ?,?,?,?,?,?,? WHERE (SELECT COUNT(*) FROM inquiries WHERE lower(email)=? AND created_at>?) < 5")
+      .bind(crypto.randomUUID(), data.listingId, data.name, data.email, data.phone, data.message, now, data.email, now - 3600000).run();
+    if (!result.meta.changes) throw new ApiError("You’ve sent a few messages recently. Please try again in an hour.", 429);
     return Response.json({ success: true }, { status: 201 });
   } catch (e) { return apiError(e); }
 }

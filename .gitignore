@@ -47,3 +47,6 @@ ADMIN-ACCESS.local.md
 /.design/review/
 /.design/final/
 /.design/inspection-final/
+/.design/refinement/
+/.design/refine-edit.mjs
+/.design/probe-bugs.mjs
