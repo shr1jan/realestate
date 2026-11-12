@@ -1,0 +1,1 @@
+import Link from "@/components/link";export default function NotFound(){return <main id="main" className="error-page page-width"><h1>Listing not found.</h1><p>This listing may have been removed or the address may be incorrect.</p><Link href="/admin" className="button button-primary">Back to listings</Link></main>;}

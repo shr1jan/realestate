@@ -6,9 +6,10 @@ export function normalizeSearch(raw: Record<string, unknown>) {
   const transaction = raw.transaction === "rent" ? "rent" : "buy";
   return {
     transaction,
+    sort: raw.sort === "low" || raw.sort === "high" ? raw.sort : "recommended",
     q: typeof raw.q === "string" ? raw.q.trim().replace(/\s+/g, " ").slice(0,100) : "",
     max: typeof raw.max === "string" && priceOptions[transaction].some(([v]) => String(v) === raw.max) ? raw.max : "",
     type: typeof raw.type === "string" && ["House", "Townhouse", "Condo"].includes(raw.type) ? raw.type : "",
-    beds: typeof raw.beds === "string" && ["1","2","3","4"].includes(raw.beds) ? raw.beds : "",
+    beds: typeof raw.beds === "string" && ["0","1","2","3","4"].includes(raw.beds) ? raw.beds : "",
   };
 }

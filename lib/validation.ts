@@ -7,6 +7,8 @@ export const listingSchema = z.object({
   description: z.string().trim().min(30).max(10000), features: z.array(z.string().trim().min(1).max(100)).max(30), images: z.array(image).min(1, "Add at least one photo.").max(20),
   status: z.enum(["published", "draft", "archived"]), featured: z.boolean(), demo: z.boolean(),
 });
+export const draftSchema = listingSchema.extend({address:z.string().trim().max(200),neighborhood:z.string().trim().max(100),city:z.string().trim().max(100),price:z.number().int().min(0).max(1000000000),beds:z.number().int().min(0).max(50),baths:z.number().min(0).max(50).multipleOf(.5),sqft:z.number().int().min(0).max(1000000),year:z.number().int().min(0).max(2100),description:z.string().trim().max(10000),images:z.array(image).max(20)});
+export const saveListingSchema = draftSchema.superRefine((value,ctx)=>{if(value.status==="published"){const result=listingSchema.safeParse(value);if(!result.success)for(const issue of result.error.issues)ctx.addIssue(issue);}});
 export const inquirySchema = z.object({ listingId: z.string().min(1).max(100), name: z.string().trim().min(2,"Enter your full name.").max(100), email: z.string().trim().email("Enter a valid email address.").max(200).transform(v => v.toLowerCase()), phone: z.string().trim().max(40), message: z.string().trim().min(10,"Add a message of at least 10 characters.").max(3000) });
 export function validationFields(error: z.ZodError) {
   return Object.fromEntries(Object.entries(error.flatten().fieldErrors).map(([key, values]) => [key, values?.[0] || "Check this field."]));

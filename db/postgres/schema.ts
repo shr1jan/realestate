@@ -15,6 +15,6 @@ export const savedHomes = pgTable("saved_homes", {
 export const admins = pgTable("admins", { userId: text("user_id").primaryKey(), email: text("email").notNull(), createdAt: bigint("created_at", { mode: "number" }).notNull() }, () => [uniqueIndex("admins_single_owner").on(sql`(true)`)]);
 export const inquiries = pgTable("inquiries", {
   id: text("id").primaryKey(), listingId: text("listing_id").notNull().references(() => listings.id), name: text("name").notNull(),
-  email: text("email").notNull(), phone: text("phone").notNull(), message: text("message").notNull(), createdAt: bigint("created_at", { mode: "number" }).notNull(),
+  email: text("email").notNull(), phone: text("phone").notNull(), message: text("message").notNull(), responded: boolean("responded").notNull().default(false), createdAt: bigint("created_at", { mode: "number" }).notNull(),
 });
 export const adminLoginLimits = pgTable("admin_login_limits", {key:text("key").primaryKey(),attempts:integer("attempts").notNull(),resetAt:bigint("reset_at",{mode:"number"}).notNull()});

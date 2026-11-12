@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { listings } from "@/db/schema";
-import { listingSchema, validationFields } from "@/lib/validation";
+import { saveListingSchema, validationFields } from "@/lib/validation";
 import { apiError, ApiError, encode, getProperty, readJson, requireAdmin, sameOrigin } from "@/lib/server";
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
@@ -10,7 +10,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     const existing = await getProperty(id, true);
     if (!existing) throw new ApiError("This listing was not found.", 404);
     const body = await readJson(request);
-    const parsed = listingSchema.safeParse(body);
+    const parsed = saveListingSchema.safeParse(body);
     if (!parsed.success) throw new ApiError("Check the highlighted listing details.", 400, validationFields(parsed.error));
     if (typeof body.expectedUpdatedAt !== "number" || !Number.isSafeInteger(body.expectedUpdatedAt)) throw new ApiError("Reload this listing before saving it again.");
     const updatedAt = Math.max(Date.now(), existing.updatedAt + 1);

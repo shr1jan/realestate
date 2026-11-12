@@ -1,0 +1,1 @@
+ALTER TABLE `inquiries` ADD `responded` integer DEFAULT false NOT NULL;

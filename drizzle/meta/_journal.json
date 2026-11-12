@@ -15,6 +15,13 @@
       "when": 1794512527647,
       "tag": "0001_admin_login_limits",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1794515115251,
+      "tag": "0002_parched_young_avengers",
+      "breakpoints": true
     }
   ]
 }
