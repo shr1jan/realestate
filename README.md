@@ -8,9 +8,10 @@ Node 22.13+ is required. Run `npm ci`, then `npm run build`. Apply the schema on
 
 ```
 node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_steady_leader.sql
+node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0001_admin_login_limits.sql
 ```
 
-Set `ADMIN_SETUP_KEY` to a long random secret in the ignored `.dev.vars` file, then run `npm run dev`. The local URL is `http://127.0.0.1:5173`. Application sign-in uses Google OpenID Connect. See `GOOGLE-SIGN-IN.md` and `google-auth.env.example`. Until Google credentials are configured, sign-in shows a clear unavailable state. The starter's platform identity does not grant app account access.
+Run `node scripts/configure-admin.mjs` to generate the separate administrator credentials, then run `npm run dev`. The local URL is `http://127.0.0.1:5173`. Application sign-in uses Google OpenID Connect. See `GOOGLE-SIGN-IN.md` and `google-auth.env.example`. Until Google credentials are configured, sign-in shows a clear unavailable state. The starter's platform identity does not grant app account access.
 
 Administrators use a separate username/password sign-in at `/admin/login`, accessible by direct URL only. Local credentials are in ignored `ADMIN-CREDENTIALS.local.json`. See `ADMIN-SIGN-IN.md` for configuration, rotation and checks. Google is used only for user accounts and saved homes. The old setup-key administrator activation is disabled.
 

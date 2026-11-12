@@ -4,6 +4,8 @@ Administrators use `/admin/login`, reached directly by URL. Public desktop/mobil
 
 The generated local credentials are in ignored `ADMIN-CREDENTIALS.local.json`. Open it locally; do not commit it or paste its password into source. Use `http://127.0.0.1:5173/admin/login` for this preview.
 
+The development server explicitly denies HTTP access to private credential files, environment files and local verification tooling. Read credentials through the local filesystem/editor, never through a website URL.
+
 ## Configuration and rotation
 
 `node scripts/configure-admin.mjs` creates a strong random password for username `admin`, writes the local credential file and updates ignored `.dev.vars`. To choose a different username/password, the script also accepts JSON through stdin; use a password of at least 16 characters. Do not pass passwords as shell arguments. Running this script rotates the local session secret and invalidates existing admin sessions.
