@@ -10,8 +10,9 @@ export const useSaved = () => useContext(SavedContext);
 export function SiteShell({ user, initialSaved, children }: { user: User; initialSaved: string[]; children: React.ReactNode }) {
   const pathname = usePathname(); const admin = pathname.startsWith("/admin");
   const [saved, setSavedState] = useState(initialSaved); const [open, setOpen] = useState(false); const [toast, setToast] = useState("");
+  const [returnTo, setReturnTo] = useState(pathname);
   useEffect(() => { setSavedState(initialSaved); }, [initialSaved.join(",")]);
-  useEffect(() => { setOpen(false); }, [pathname]);
+  useEffect(() => { setOpen(false); setReturnTo(window.location.pathname + window.location.search + window.location.hash); }, [pathname]);
   useEffect(() => {
     try { const message = sessionStorage.getItem("stillwell-flash"); if (message) { setToast(message); sessionStorage.removeItem("stillwell-flash"); } } catch { /* Storage is optional. */ }
   }, []);
@@ -30,7 +31,7 @@ export function SiteShell({ user, initialSaved, children }: { user: User; initia
         <Link href="/saved" className={pathname === "/saved" ? "nav-active" : ""}>Saved homes{saved.length > 0 && <span className="nav-count">{saved.length}</span>}</Link>
         {user?.isAdmin && <Link href="/admin" className={admin ? "nav-active" : ""}>Admin portal</Link>}
       </nav>
-      <div className="header-actions">{user ? <><span className="account-name" title={user.email}>{user.displayName.split(" ")[0].split("@")[0]}</span><a href="/signout-with-chatgpt?return_to=/" target="_top" className="icon-button" aria-label="Sign out"><LogOut size={18}/></a></> : <Link href={`/login?returnTo=${encodeURIComponent(pathname)}`} className="sign-in">Sign in <ArrowUpRight size={16}/></Link>}
+      <div className="header-actions">{user ? <><span className="account-name" title={user.email}>{user.displayName.split(" ")[0].split("@")[0]}</span><a href="/signout-with-chatgpt?return_to=/" target="_top" className="icon-button" aria-label="Sign out"><LogOut size={18}/></a></> : <Link href={`/login?returnTo=${encodeURIComponent(returnTo)}`} className="sign-in">Sign in <ArrowUpRight size={16}/></Link>}
         <button className="icon-button mobile-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Close menu" : "Open menu"}>{open ? <X size={23}/> : <Menu size={23}/>}</button>
       </div>
     </div>{open && <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation"><Link href="/homes">Browse homes</Link><Link href="/saved">Saved homes ({saved.length})</Link>{user?.isAdmin && <Link href="/admin">Admin portal</Link>}</nav>}</header>

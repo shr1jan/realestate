@@ -14,7 +14,7 @@ export function ListingEditor({ property }: { property?: Property }) {
   const saving = useRef(false); const leaving = useRef(false); const errorBox = useRef<HTMLParagraphElement>(null);
   const [conflict,setConflict] = useState(false);
   const dirty = JSON.stringify(value) !== JSON.stringify(property || blank);
-  useEffect(()=>{if(!dirty)return;const guard=(event:BeforeUnloadEvent)=>{if(!leaving.current){event.preventDefault();event.returnValue="";}};window.addEventListener("beforeunload",guard);return()=>window.removeEventListener("beforeunload",guard);},[dirty]);
+  useEffect(()=>{if(!dirty&&!uploading&&!busy)return;const guard=(event:BeforeUnloadEvent)=>{if(!leaving.current){event.preventDefault();event.returnValue="";}};window.addEventListener("beforeunload",guard);return()=>window.removeEventListener("beforeunload",guard);},[dirty,uploading,busy]);
   useEffect(()=>{if(error)errorBox.current?.focus();},[error]);
   function showError(message:string){setError(message);}
   function update(key:string, content:unknown) { setValue(v=>({...v,[key]:content})); setError(""); setFieldErrors(v=>({...v,[key]:""})); }

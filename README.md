@@ -45,7 +45,7 @@ Listing updates include `expectedUpdatedAt` from the editor's loaded record. A s
 
 `.design/browser-check.mjs` records interactive browser QA using the installed design skill's local browser runner. Captures and the visual evidence receipt are under `.design/final/`. QA captures are excluded from Git and deployment assets. `DESIGN.md` records the implemented system.
 
-The latest bug-fix/refinement pass is recorded under `.design/refinement/`: 31 API regressions, 23 interactive browser checks and 29 final production layout/API checks. Original release captures under `.design/final/` remain as the visual baseline.
+The latest bug-fix/refinement pass is recorded under `.design/refinement/`: 33 API regressions, 32 interactive browser checks and 29 final production layout/API checks. Original release captures under `.design/final/` remain as the visual baseline. Upload checks include a real 4 MB PNG and oversized streamed requests without Content-Length. Browser checks also cover failed images before hydration, response-body timeouts, preserved search filters through sign-in, and navigation guards during pending saves/uploads.
 
 ## Before public launch
 
