@@ -30,6 +30,8 @@ Contact actions appear only on individual property detail pages. Draft and archi
 
 ## Storage and deployment
 
+Neon PostgreSQL and Neon S3-compatible Object Storage integration preparation is documented in [NEON-SETUP.md](NEON-SETUP.md). Active database queries remain on D1 until the future tested cutover. New photo writes accept only converted WebP; originals are never stored. The storage adapter can use the Neon bucket once its complete server-side configuration is supplied.
+
 Cloudflare D1 uses `DB`; R2 uses `BUCKET`. Schema and generated migration metadata are committed under `db/` and `drizzle/`. Seeds are application data and are inserted once into an empty catalogue, outside schema migrations. Archiving preserves listings and their associated enquiries.
 
 `.openai/hosting.json` identifies the private Sites project. Sites provisioning applies the migrations and connects production storage. Build with the Sites build helper or `npm run build`. Stop the built preview before rebuilding on Windows because Wrangler holds handles inside `dist/`.
