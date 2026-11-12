@@ -4,7 +4,7 @@ export function safeReturnPath(value: unknown, fallback = "/saved"): string {
   try {
     const url = new URL(value, "https://stillwell.local");
     const pathname = decodeURIComponent(url.pathname).replace(/\/+$/, "") || "/";
-    if (url.origin !== "https://stillwell.local" || reserved.has(pathname) || /[\x00-\x1f]/.test(pathname)) return fallback;
+    if (url.origin !== "https://stillwell.local" || reserved.has(pathname) || pathname === "/api/auth" || pathname.startsWith("/api/auth/") || /[\x00-\x1f]/.test(pathname)) return fallback;
     return `${url.pathname}${url.search}${url.hash}`;
   } catch { return fallback; }
 }

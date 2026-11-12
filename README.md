@@ -10,9 +10,9 @@ Node 22.13+ is required. Run `npm ci`, then `npm run build`. Apply the schema on
 node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_steady_leader.sql
 ```
 
-Set `ADMIN_SETUP_KEY` to a long random secret in the ignored `.dev.vars` file, then run `npm run dev`. The local URL is `http://127.0.0.1:5173`. Local sign-in uses the starter's loopback-only `seedy@sites.test` development identity. Hosted authentication is provided by Sites; development mock auth is absent from production builds.
+Set `ADMIN_SETUP_KEY` to a long random secret in the ignored `.dev.vars` file, then run `npm run dev`. The local URL is `http://127.0.0.1:5173`. Application sign-in uses Google OpenID Connect. See `GOOGLE-SIGN-IN.md` and `google-auth.env.example`. Until Google credentials are configured, sign-in shows a clear unavailable state. The starter's platform identity does not grant app account access.
 
-Visit `/admin`, sign in and activate the first administrator with the private setup key. The activation is atomic and stops accepting new administrators after the first account is configured. Local and hosted databases are separate, so activate the account in each environment you use. The key must also be configured as a Sites runtime secret for hosted setup. The current private key and owner instructions are in `ADMIN-ACCESS.local.md`, an ignored local file.
+After configuring Google, visit `/admin`, sign in and activate the first Google administrator with the private setup key. The activation is atomic and stops accepting new Google administrators after the first Google account is configured. Existing legacy admin rows cannot sign in through the app. Local and hosted databases are separate, so activate the account in each environment you use. The key must also be configured as a Sites runtime secret for hosted setup. The current private key and owner instructions are in `ADMIN-ACCESS.local.md`, an ignored local file.
 
 ## Features
 
@@ -40,13 +40,13 @@ The app supports anonymous property browsing when the Site audience is made publ
 
 ## Validation
 
-`npx tsc --noEmit` checks types. `scripts/check-flows.mjs` exercises a fresh local database and the first-admin setup, then the listing lifecycle, permissions, saves, uploads and enquiries. It intentionally creates local test data; it is a first-setup integration check, not a repeatable production command.
+`npx tsc --noEmit` checks types. `node scripts/check-google-auth.mjs` tests the OAuth/session protocol with mocked Google endpoints. `node scripts/check-google-flows.mjs` tests local encrypted sessions, account isolation and first-Google-admin setup. These use test identities and must run against a disposable local database. See `GOOGLE-SIGN-IN.md`.
 
-For the regression suite, start the loopback-only API runner with `node node_modules/vite/bin/vite.js --config scripts/vite/qa.config.ts --port 5175`, then run `node scripts/check-regressions.mjs`. This runner accepts synthetic identity headers so account isolation can be tested; it is a local test configuration and is never used for production. Use an initialized local database with `local_seedy` as its administrator. The suite writes clearly named QA listings and enquiries and emits cleanup SQL under `.design/refinement/`. The separate runner avoids a Windows Wrangler proxy restart issue during rejected-body tests; browser QA uses the built production Worker.
+For the regression suite, start the loopback-only API runner with `node node_modules/vite/bin/vite.js --config scripts/vite/qa.config.ts --port 5175`, then run `node scripts/check-regressions.mjs`. Tests use short-lived encrypted local session cookies; platform identity headers do not grant app access. The runner is a local test configuration and is never used for production. Run the Google flow checks first to create the local `google:local_seedy` QA administrator, then remove it after testing. The suite writes clearly named QA listings and enquiries and emits cleanup SQL under `.design/refinement/`. The separate runner avoids a Windows Wrangler proxy restart issue during rejected-body tests; browser QA uses the built production Worker.
 
 Listing updates include `expectedUpdatedAt` from the editor's loaded record. A stale write receives HTTP 409 rather than overwriting another edit. Saved counts and lists include only published homes. JSON endpoints reject malformed or oversized input with client errors, and photo-upload parsing errors remain JSON responses.
 
-`.design/browser-check.mjs` records interactive browser QA using the installed design skill's local browser runner. Captures and the visual evidence receipt are under `.design/final/`. QA captures are excluded from Git and deployment assets. `DESIGN.md` records the implemented system.
+The historical `.design/browser-check.mjs` records the former ChatGPT-based login flow using the installed design skill's local browser runner; it is not a Google authentication check. Captures and the visual evidence receipt are under `.design/final/`. QA captures are excluded from Git and deployment assets. `DESIGN.md` records the implemented system.
 
 The latest bug-fix/refinement pass is recorded under `.design/refinement/`: 33 API regressions, 32 interactive browser checks and 29 final production layout/API checks. Original release captures under `.design/final/` remain as the visual baseline. Upload checks include a real 4 MB PNG and oversized streamed requests without Content-Length. Browser checks also cover failed images before hydration, response-body timeouts, preserved search filters through sign-in, and navigation guards during pending saves/uploads.
 

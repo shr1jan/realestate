@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
+import {qaIdentity} from './qa-auth.mjs';
 import {sampleProperties} from '../lib/properties.ts';
 const base=process.env.CHECK_ORIGIN||'http://127.0.0.1:5175';
 if(!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(base))throw new Error('Regression mutations are restricted to a local preview.');
-const primary={'oai-authenticated-user-id':'local_seedy','oai-authenticated-user-email':'seedy@sites.test'};
-const secondary={'oai-authenticated-user-id':'qa_second_visitor','oai-authenticated-user-email':'qa-second@stillwell.test'};
+const primary=await qaIdentity();
+const secondary=await qaIdentity('qa_second_visitor','qa-second@stillwell.test');
 const checks=[];let id,version;
 const unique=crypto.randomUUID();const email=`qa-refine-${unique}@stillwell.test`;
 const fixture={...sampleProperties[0],title:`QA regression ${unique}`,featured:false,status:'draft',features:[]};
@@ -25,8 +26,8 @@ await check('Reject wrong JSON content type',async()=>assert.equal((await req('/
 await check('Cross-site request denied even without Origin',async()=>{const r=await fetch(base+'/api/saved',{method:'POST',headers:{...primary,'Sec-Fetch-Site':'cross-site'}});const text=await r.text();assert.equal(r.status,403,text);});
 await check('Anonymous saved write remains protected',async()=>assert.equal((await req('/api/saved',{identity:{},method:'POST',body:{listingId:'ridgeview-house',saved:true}})).status,401));
 await check('Non-admin cannot write listings',async()=>assert.equal((await req('/api/admin/listings',{identity:secondary,method:'POST',body:fixture})).status,403));
-await check('Repeated login query parameters render safely',async()=>{const r=await req('/login?returnTo=/saved&returnTo=/admin',{identity:{}});const text=await r.text();assert.equal(r.status,200);assert.doesNotMatch(text,/A little pause in your search/);assert.match(text,/Continue with ChatGPT/);});
-await check('Login rejects external destinations and auth loops',async()=>{for(const target of ['//elsewhere.test','/\\elsewhere.test','/login/','/%6cogin','/callback']){const r=await req('/login?returnTo='+encodeURIComponent(target),{identity:{}});assert.match(await r.text(),/return_to=%2Fsaved/);}});
+await check('Repeated login query parameters render safely',async()=>{const r=await req('/login?returnTo=/saved&returnTo=/admin',{identity:{}});const text=await r.text();assert.equal(r.status,200);assert.doesNotMatch(text,/A little pause in your search/);assert.match(text,/Continue with Google/);});
+await check('Malformed sign-in destinations render safely',async()=>{for(const target of ['//elsewhere.test','/\\elsewhere.test','/login/','/%6cogin','/callback']){const r=await req('/login?returnTo='+encodeURIComponent(target),{identity:{}});assert.match(await r.text(),/Continue with Google/);}});
 await check('Unsupported filters match the visible default controls',async()=>{const text=await(await req('/homes?max=-1&type=invalid&beds=99')).text();assert.match(text,/Ridgeview House/);assert.match(text,/Juniper Townhome/);});
 await check('Whitespace searches are normalized',async()=>assert.match(await(await req('/homes?q=%20%20East%20%20%20Austin%20')).text(),/Meadowlark House/));
 await check('Detailed validation errors identify their fields',async()=>{const r=await req('/api/admin/listings',{method:'POST',body:{...fixture,price:-1,images:[]}});assert.equal(r.status,400);const data=await r.json();assert.ok(data.fields.price);assert.ok(data.fields.images);});

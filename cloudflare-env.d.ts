@@ -10,5 +10,9 @@ declare namespace Cloudflare {
     AWS_SECRET_ACCESS_KEY?: string;
     AWS_SESSION_TOKEN?: string;
     AWS_REGION?: string;
+    AUTH_URL?: string;
+    AUTH_SECRET?: string;
+    GOOGLE_CLIENT_ID?: string;
+    GOOGLE_CLIENT_SECRET?: string;
   }
 }

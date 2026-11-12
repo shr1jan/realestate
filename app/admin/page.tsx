@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { desc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
-import { admins, inquiries, listings } from "@/db/schema";
-import { getProperties, viewer } from "@/lib/server";
+import { inquiries, listings } from "@/db/schema";
+import { getProperties, hasGoogleAdmin, viewer } from "@/lib/server";
 import { AdminSetup } from "@/components/admin-setup";
 import { AdminManager } from "@/components/admin-manager";
 export const dynamic = "force-dynamic";
@@ -10,7 +10,7 @@ export const metadata = { title: "Admin portal", robots: { index:false,follow:fa
 export default async function Admin() {
   const user = await viewer(); if (!user) redirect("/login?returnTo=/admin");
   if (!user.isAdmin) {
-    const configured = (await getDb().select({id:admins.userId}).from(admins).limit(1)).length > 0;
+    const configured = await hasGoogleAdmin();
     return <main id="main" className="page-width"><AdminSetup configured={configured}/></main>;
   }
   const properties = await getProperties(true);
