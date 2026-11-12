@@ -10,7 +10,7 @@ await check('Platform identity headers alone cannot access app accounts',async()
 await check('Tampered app cookie cannot save a home',async()=>assert.equal((await req('/api/saved',{cookie:'authjs.session-token=tampered'},{listingId:'ridgeview-house',saved:true})).status,401));
 await check('Valid encrypted Google session can save and retains pending-save return URL',async()=>{assert.equal((await req('/api/saved',primary,{listingId:'ridgeview-house',saved:true})).status,200);assert.match(await(await req('/saved',primary)).text(),/Ridgeview House/);const r=await req('/login?returnTo='+encodeURIComponent('/homes/ridgeview-house?save=ridgeview-house'),primary);assert.equal(r.headers.get('location'),'/homes/ridgeview-house?save=ridgeview-house');});
 await check('A second Google account has a separate saved list',async()=>{const html=await(await req('/saved',secondary)).text();assert.doesNotMatch(html,/card-info/);});
-await check('Private setup key activates the first Google admin despite legacy admin rows',async()=>{const r=await req('/api/admin/setup',primary,{key});assert.equal(r.status,200,await r.clone().text());assert.match(await(await req('/admin',primary)).text(),/Your listings/);});
-await check('Further Google admin claims are denied even with the setup key',async()=>assert.equal((await req('/api/admin/setup',secondary,{key})).status,403));
+await check('Google accounts cannot open the admin portal',async()=>assert.equal((await req('/admin',primary)).headers.get('location'),'/admin/login'));
+await check('Legacy setup-key activation is disabled',async()=>assert.equal((await req('/api/admin/setup',primary,{key:'unused'})).status,410));
 await req('/api/saved',primary,{listingId:'ridgeview-house',saved:false});
 await fs.writeFile('.design/refinement/google-flow-results.json',JSON.stringify({checks,identity:'Locally minted short-lived Google-shaped session; live OAuth tested separately with mocked Google endpoints.'},null,2));

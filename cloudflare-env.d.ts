@@ -14,5 +14,9 @@ declare namespace Cloudflare {
     AUTH_SECRET?: string;
     GOOGLE_CLIENT_ID?: string;
     GOOGLE_CLIENT_SECRET?: string;
+    ADMIN_USERNAME?: string;
+    ADMIN_PASSWORD_HASH?: string;
+    ADMIN_SESSION_SECRET?: string;
+    ADMIN_AUTH_URL?: string;
   }
 }

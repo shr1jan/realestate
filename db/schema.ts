@@ -12,6 +12,7 @@ export const savedHomes = sqliteTable("saved_homes", {
   userId: text("user_id").notNull(), listingId: text("listing_id").notNull().references(() => listings.id, { onDelete: "cascade" }), createdAt: integer("created_at").notNull(),
 }, (t) => [primaryKey({ columns: [t.userId, t.listingId] })]);
 export const admins = sqliteTable("admins", { userId: text("user_id").primaryKey(), email: text("email").notNull(), createdAt: integer("created_at").notNull() });
+export const adminLoginLimits = sqliteTable("admin_login_limits", {key:text("key").primaryKey(),attempts:integer("attempts").notNull(),resetAt:integer("reset_at").notNull()});
 export const inquiries = sqliteTable("inquiries", {
   id: text("id").primaryKey(), listingId: text("listing_id").notNull().references(() => listings.id), name: text("name").notNull(),
   email: text("email").notNull(), phone: text("phone").notNull(), message: text("message").notNull(), createdAt: integer("created_at").notNull(),

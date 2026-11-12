@@ -12,7 +12,7 @@ node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1
 
 Set `ADMIN_SETUP_KEY` to a long random secret in the ignored `.dev.vars` file, then run `npm run dev`. The local URL is `http://127.0.0.1:5173`. Application sign-in uses Google OpenID Connect. See `GOOGLE-SIGN-IN.md` and `google-auth.env.example`. Until Google credentials are configured, sign-in shows a clear unavailable state. The starter's platform identity does not grant app account access.
 
-After configuring Google, visit `/admin`, sign in and activate the first Google administrator with the private setup key. The activation is atomic and stops accepting new Google administrators after the first Google account is configured. Existing legacy admin rows cannot sign in through the app. Local and hosted databases are separate, so activate the account in each environment you use. The key must also be configured as a Sites runtime secret for hosted setup. The current private key and owner instructions are in `ADMIN-ACCESS.local.md`, an ignored local file.
+Administrators use a separate username/password sign-in at `/admin/login`, accessible by direct URL only. Local credentials are in ignored `ADMIN-CREDENTIALS.local.json`. See `ADMIN-SIGN-IN.md` for configuration, rotation and checks. Google is used only for user accounts and saved homes. The old setup-key administrator activation is disabled.
 
 ## Features
 
@@ -40,9 +40,9 @@ The app supports anonymous property browsing when the Site audience is made publ
 
 ## Validation
 
-`npx tsc --noEmit` checks types. `node scripts/check-google-auth.mjs` tests the OAuth/session protocol with mocked Google endpoints. `node scripts/check-google-flows.mjs` tests local encrypted sessions, account isolation and first-Google-admin setup. These use test identities and must run against a disposable local database. See `GOOGLE-SIGN-IN.md`.
+`npx tsc --noEmit` checks types. `node scripts/check-google-auth.mjs` tests the OAuth/session protocol with mocked Google endpoints. `node scripts/check-google-flows.mjs` tests local encrypted sessions, account isolation and user/admin separation. These use test identities and must run against a disposable local database. See `GOOGLE-SIGN-IN.md`.
 
-For the regression suite, start the loopback-only API runner with `node node_modules/vite/bin/vite.js --config scripts/vite/qa.config.ts --port 5175`, then run `node scripts/check-regressions.mjs`. Tests use short-lived encrypted local session cookies; platform identity headers do not grant app access. The runner is a local test configuration and is never used for production. Run the Google flow checks first to create the local `google:local_seedy` QA administrator, then remove it after testing. The suite writes clearly named QA listings and enquiries and emits cleanup SQL under `.design/refinement/`. The separate runner avoids a Windows Wrangler proxy restart issue during rejected-body tests; browser QA uses the built production Worker.
+For the regression suite, start the loopback-only API runner with `node node_modules/vite/bin/vite.js --config scripts/vite/qa.config.ts --port 5175`, then run `node scripts/check-regressions.mjs`. Tests use short-lived encrypted local session cookies; platform identity headers do not grant app access. The runner is a local test configuration and is never used for production. Configure local admin credentials first; QA performs a real username/password login for administrator operations. The suite writes clearly named QA listings and enquiries and emits cleanup SQL under `.design/refinement/`. The separate runner avoids a Windows Wrangler proxy restart issue during rejected-body tests; browser QA uses the built production Worker.
 
 Listing updates include `expectedUpdatedAt` from the editor's loaded record. A stale write receives HTTP 409 rather than overwriting another edit. Saved counts and lists include only published homes. JSON endpoints reject malformed or oversized input with client errors, and photo-upload parsing errors remain JSON responses.
 

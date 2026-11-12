@@ -1,7 +1,8 @@
 import { env } from "cloudflare:workers";
-import { and, desc, eq, like } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
-import { admins, listings, savedHomes } from "@/db/schema";
+import { listings, savedHomes } from "@/db/schema";
+import { getAdminUser } from "@/lib/admin-auth";
 import { getCurrentUser } from "@/lib/auth";
 import { Property, sampleProperties } from "./properties";
 const decode = (row: typeof listings.$inferSelect): Property => ({ ...row, features: JSON.parse(row.features), images: JSON.parse(row.images) } as Property);
@@ -30,8 +31,7 @@ export async function getProperty(id: string, includeDraft = false) {
 export async function viewer() {
   const user = await getCurrentUser();
   if (!user) return null;
-  const rows = await getDb().select().from(admins).where(eq(admins.userId, user.userId)).limit(1);
-  return { ...user, isAdmin: rows.length > 0 };
+  return { ...user, isAdmin: false };
 }
 export async function savedIds(userId?: string) {
   if (!userId) return [];
@@ -45,15 +45,7 @@ export async function getSavedProperties(userId: string) {
     .where(and(eq(savedHomes.userId, userId), eq(listings.status, "published")))
     .orderBy(desc(savedHomes.createdAt))).map(row => decode(row.listing));
 }
-export async function requireAdmin() {
-  const user = await viewer();
-  if (!user) throw new ApiError("Please sign in to continue.", 401);
-  if (!user.isAdmin) throw new ApiError("Administrator access is required.", 403);
-  return user;
-}
-export async function hasGoogleAdmin() {
-  return (await getDb().select({ id: admins.userId }).from(admins).where(like(admins.userId, "google:%")).limit(1)).length > 0;
-}
+export async function requireAdmin() { const user=await getAdminUser(); if(!user)throw new ApiError("Administrator sign-in is required.",401); return user; }
 export class ApiError extends Error {
   constructor(message: string, public status = 400, public fields?: Record<string, string>) { super(message); }
 }

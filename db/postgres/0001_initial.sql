@@ -18,6 +18,7 @@ CREATE TABLE saved_homes (
 );
 CREATE TABLE admins (user_id text PRIMARY KEY, email text NOT NULL, created_at bigint NOT NULL);
 CREATE UNIQUE INDEX admins_single_owner ON admins ((true));
+CREATE TABLE admin_login_limits (key text PRIMARY KEY, attempts integer NOT NULL, reset_at bigint NOT NULL);
 CREATE TABLE inquiries (
   id text PRIMARY KEY, listing_id text NOT NULL REFERENCES listings(id),
   name text NOT NULL, email text NOT NULL, phone text NOT NULL,
