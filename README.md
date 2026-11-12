@@ -22,6 +22,7 @@ Visit `/admin`, sign in and activate the first administrator with the private se
 - Saved homes are stored per stable account ID in D1.
 - Server-authorized admin listing creation and updates, publication, drafts and archives.
 - Photo uploads to R2 (JPG, PNG, WebP, 8 MB each), or HTTPS image URLs. Uploaded assets are served through `/media/`.
+  Admin file uploads are converted to WebP in the browser before transfer, retaining dimensions. The encoder tests qualities from 85–100 against sampled local RGB SSIM and pixel error, increasing quality for difficult photos. These are conservative similarity heuristics, not a guarantee of perceptual identity or a percentage of original quality. Some photos require lossless output or produce larger files. Existing WebP is retained when recompression would enlarge it; image URLs and existing uploads are unchanged.
 - Enquiries persist in D1 and appear in the admin inbox. No email delivery provider is configured; the listing manager can reply using the visitor's email link.
 - Responsive desktop/tablet/mobile layouts, semantic controls, visible focus and reduced-motion support.
 
