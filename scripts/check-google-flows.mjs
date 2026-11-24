@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';import fs from 'node:fs/promises';
 import {qaIdentity,localAuthSettings} from './qa-auth.mjs';
-const base='http://127.0.0.1:5173';const primary=await qaIdentity();const secondary=await qaIdentity('qa_second_visitor','qa-second@stillwell.test');const{key}=await localAuthSettings();const checks=[];
+const base='http://127.0.0.1:5173';const primary=await qaIdentity();const secondary=await qaIdentity('qa_second_visitor','qa-second@kadelbuilders.test');const{key}=await localAuthSettings();const checks=[];
 async function req(path,identity={},body){const r=await fetch(base+path,{method:body?'POST':'GET',headers:{...identity,...(body?{'Content-Type':'application/json',Origin:base}:{})},body:body?JSON.stringify(body):undefined,redirect:'manual'});return r;}
 async function check(name,fn){await fn();checks.push({name,status:'pass'});console.log('PASS '+name);}
 await check('Google login renders a truthful unconfigured state',async()=>{const r=await req('/login?returnTo=%2Fsaved');assert.equal(r.status,200);const html=await r.text();assert.match(html,/Continue with Google/);assert.match(html,/being configured/);assert.doesNotMatch(html,/Continue with ChatGPT/);});

@@ -2,7 +2,7 @@ import { encode, getToken } from "@auth/core/jwt";
 export type AdminSettings = { ADMIN_USERNAME?: string; ADMIN_PASSWORD_HASH?: string; ADMIN_SESSION_SECRET?: string; ADMIN_AUTH_URL?: string };
 export function adminOrigin(s: AdminSettings) { try { const u=new URL(s.ADMIN_AUTH_URL||""); return !u.username&&!u.password&&!u.search&&!u.hash&&u.pathname==="/"&&(u.protocol==="https:"||(u.protocol==="http:"&&["localhost","127.0.0.1"].includes(u.hostname)))?u.origin:null; } catch { return null; } }
 export function adminReady(s:AdminSettings) { return !!(adminOrigin(s)&&s.ADMIN_USERNAME&&s.ADMIN_PASSWORD_HASH&&s.ADMIN_SESSION_SECRET&&s.ADMIN_SESSION_SECRET.length>=32); }
-export const adminCookieName=(s:AdminSettings)=>adminOrigin(s)?.startsWith("https:")?"__Secure-stillwell-admin":"stillwell-admin";
+export const adminCookieName=(s:AdminSettings)=>adminOrigin(s)?.startsWith("https:")?"__Secure-kadel-admin":"kadel-admin";
 const hex=(bytes:ArrayBuffer)=>Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,"0")).join("");
 async function digest(text:string){return hex(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(text)));}
 export async function verifyAdminPassword(username:string,password:string,s:AdminSettings){

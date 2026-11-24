@@ -13,6 +13,6 @@ Browse listings without signing in. Saving requires login. Contact buttons appea
 ## Evidence on Hand
 No supplied listings, photos or brand assets. All initial properties must be identified as demonstration content.
 ## Open Decisions
-The user chose sensible defaults for the brand, market and stack, and selected an image concept before implementation. Stillwell and Austin, Texas / USD are demonstration defaults, not claims about a real agency or its inventory. Real business branding and inventory remain to be supplied before public launch.
+The user chose sensible defaults for the brand, market and stack, and selected an image concept before implementation. Kadel Builders and Austin, Texas / USD are demonstration defaults, not claims about a real agency or its inventory. Real business branding and inventory remain to be supplied before public launch.
 ## Product Principles
 Put homes before sales copy. Preserve the home being saved through login. Authorize administrative changes on the server.

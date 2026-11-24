@@ -4,7 +4,7 @@ import { SiteShell } from "@/components/site-shell";
 import { savedIds, viewer } from "@/lib/server";
 
 export const metadata: Metadata = {
-  title: { default: "Stillwell — A place to call your own", template: "%s — Stillwell" },
+  title: { default: "Kadel Builders — A place to call your own", template: "%s — Kadel Builders" },
   description: "Discover thoughtfully chosen homes in Austin. Browse, explore and save the places that feel like you.",
   icons: {
     icon: "/favicon.svg",

@@ -22,5 +22,5 @@ export async function requestJson<T = Record<string, unknown>>(url: string, init
   } finally { clearTimeout(timeout); }
 }
 export function setFlash(message: string) {
-  try { sessionStorage.setItem("stillwell-flash", message); } catch { /* Feedback storage must never block a saved listing. */ }
+  try { sessionStorage.setItem("kadel-flash", message); } catch { /* Feedback storage must never block a saved listing. */ }
 }

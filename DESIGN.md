@@ -1,5 +1,5 @@
 ---
-name: Stillwell
+name: Kadel Builders
 description: Considered homes, warm editorial typography, and a useful shortlist.
 colors:
   paper: "#faf9f6"
@@ -16,19 +16,19 @@ colors:
   footer: "#e9ecdf"
 typography:
   display:
-    fontFamily: "Stillwell Serif, Georgia, serif"
+    fontFamily: "Kadel Serif, Georgia, serif"
     fontSize: "64px"
     fontWeight: 600
     lineHeight: 0.98
     letterSpacing: "-0.035em"
   headline:
-    fontFamily: "Stillwell Serif, Georgia, serif"
+    fontFamily: "Kadel Serif, Georgia, serif"
     fontSize: "56px"
     fontWeight: 500
     lineHeight: 1.06
     letterSpacing: "-0.035em"
   title:
-    fontFamily: "Stillwell Serif, Georgia, serif"
+    fontFamily: "Kadel Serif, Georgia, serif"
     fontSize: "30px"
     fontWeight: 500
     lineHeight: 1.2
@@ -55,7 +55,7 @@ typography:
     lineHeight: 1.06
     letterSpacing: "-0.03em"
   wordmark:
-    fontFamily: "Stillwell Serif, Georgia, serif"
+    fontFamily: "Kadel Serif, Georgia, serif"
     fontSize: "44px"
     fontWeight: 600
     lineHeight: 1
@@ -117,13 +117,13 @@ components:
     rounded: "{rounded.image}"
 ---
 
-# Design System: Stillwell
+# Design System: Kadel Builders
 
 ## Overview
 
 **Creative North Star: "The Considered Home"**
 
-Stillwell borrows the calm of a residential architecture practice: generous warm paper, deep olive controls, considered photographic crops, and an editorial serif. Homes lead the experience. The interface gives prices, places, and practical facts enough space to be read without competing with the photography.
+Kadel Builders borrows the calm of a residential architecture practice: generous warm paper, deep olive controls, considered photographic crops, and an editorial serif. Homes lead the experience. The interface gives prices, places, and practical facts enough space to be read without competing with the photography.
 
 Public browsing, property details, saved homes, and sign-in share this welcoming editorial character. Administration uses the same palette and controls with precise sans-serif headings, compact tables, visible statuses, and direct forms. This is one identity with density adjusted to the task.
 
@@ -161,7 +161,7 @@ The error color is a restrained brick red (`error`) used for messages and field 
 
 ## Typography
 
-**Display Font:** Cormorant Garamond, self-hosted under the CSS family **Stillwell Serif**, with Georgia and serif fallbacks.
+**Display Font:** Cormorant Garamond, self-hosted under the CSS family **Kadel Serif**, with Georgia and serif fallbacks.
 
 **Body Font:** self-hosted **DM Sans**, with a sans-serif fallback. Available weights are regular, medium, semibold, and bold (400–700). The serif supplies medium and semibold (500–600).
 

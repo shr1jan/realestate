@@ -5,7 +5,7 @@
  "seed": 824517262,
  "input": {
   "kind": "smb-admin",
-  "brief": "Stillwell listing administration",
+  "brief": "Kadel Builders listing administration",
   "theme": "light",
   "screens": [
    "list",

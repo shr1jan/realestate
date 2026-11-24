@@ -1,4 +1,4 @@
-# Stillwell design direction
+# Kadel Builders design direction
 
 THESIS: Help a person picture everyday life in a home, then keep a shortlist.
 OWN-WORLD: A residential architecture practice: considered photographic crops, warm white, deep olive, editorial serif headings, precise sans-serif controls.

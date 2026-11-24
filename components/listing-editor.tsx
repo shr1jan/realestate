@@ -18,8 +18,8 @@ export function ListingEditor({ property }: { property?: Property }) {
   const [value,setValue] = useState<EditorValue>(property || blank); const [busy,setBusy] = useState(false); const [uploading,setUploading] = useState(false); const [error,setError] = useState(""); const [imageUrl,setImageUrl] = useState(""); const [fieldErrors,setFieldErrors] = useState<Record<string,string>>({});
   const preview=useRef<HTMLDialogElement>(null); const [retryFiles,setRetryFiles]=useState<File[]>([]);
   const saving = useRef(false); const leaving = useRef(false); const errorBox = useRef<HTMLParagraphElement>(null);
-  const [returnPath,setReturnPath]=useState("/admin");useEffect(()=>{try{const path=sessionStorage.getItem("stillwell-admin-return");if(path?.startsWith("/admin?"))setReturnPath(path);}catch{}},[]);
-  const storageKey=`stillwell-draft-${property?.id||"new"}`;
+  const [returnPath,setReturnPath]=useState("/admin");useEffect(()=>{try{const path=sessionStorage.getItem("kadel-admin-return");if(path?.startsWith("/admin?"))setReturnPath(path);}catch{}},[]);
+  const storageKey=`kadel-draft-${property?.id||"new"}`;
   const [restorable,setRestorable]=useState<EditorValue|null>(null);const [uploadProgress,setUploadProgress]=useState("");const [removed,setRemoved]=useState<{src:string,index:number}|null>(null);const [expired,setExpired]=useState(false);
   useEffect(()=>{try{const raw=localStorage.getItem(storageKey);if(raw){const saved=JSON.parse(raw);if(saved.updatedAt===(property?.updatedAt||0))setRestorable(saved.value);}}catch{}},[]);
   useEffect(()=>{if(!dirty)return;const timer=setTimeout(()=>{try{localStorage.setItem(storageKey,JSON.stringify({value,updatedAt:property?.updatedAt||0}));}catch{}},400);return()=>clearTimeout(timer);},[value]);

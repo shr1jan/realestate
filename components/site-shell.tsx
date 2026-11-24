@@ -16,7 +16,7 @@ export function SiteShell({ user, initialSaved, children }: { user: User; initia
   useEffect(() => { setOpen(false); setReturnTo(window.location.pathname + window.location.search + window.location.hash); }, [pathname]);
   useEffect(() => {
     if(admin)return;
-    try { const message = sessionStorage.getItem("stillwell-flash"); if (message) { setToast(message); sessionStorage.removeItem("stillwell-flash"); } } catch { /* Storage is optional. */ }
+    try { const message = sessionStorage.getItem("kadel-flash"); if (message) { setToast(message); sessionStorage.removeItem("kadel-flash"); } } catch { /* Storage is optional. */ }
   }, []);
   useEffect(() => {
     if (!open) return;
@@ -28,7 +28,7 @@ export function SiteShell({ user, initialSaved, children }: { user: User; initia
   return <SavedContext.Provider value={{ user, saved, setSaved: (id, value) => setSavedState(prev => value ? [...new Set([...prev, id])] : prev.filter(v => v !== id)), notify: setToast }}>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className="site-header"><div className="header-inner">
-      <Link href="/" className="wordmark" aria-label="Stillwell home">Stillwell<span className="brand-dot">.</span></Link>
+      <Link href="/" className="wordmark" aria-label="Kadel Builders home">Kadel Builders<span className="brand-dot">.</span></Link>
       <nav className="desktop-nav" aria-label="Main navigation">
         <Link href="/homes" className={pathname === "/" || pathname.startsWith("/homes") ? "nav-active" : ""} aria-current={pathname === "/" || pathname.startsWith("/homes") ? "page" : undefined}>Browse homes</Link>
         <Link href="/saved" className={pathname === "/saved" ? "nav-active" : ""}>Saved homes{saved.length > 0 && <span className="nav-count">{saved.length}</span>}</Link>
@@ -39,8 +39,8 @@ export function SiteShell({ user, initialSaved, children }: { user: User; initia
       </div>
     </div>{open && <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation"><Link href="/homes">Browse homes</Link><Link href="/saved">Saved homes ({saved.length})</Link></nav>}</header>
     {children}
-    <footer className="site-footer"><div className="footer-top"><Link href="/" className="wordmark">Stillwell<span className="brand-dot">.</span></Link><p>A little more considered.<br/>A little more like home.</p><div><Link href="/homes">Browse homes <ArrowUpRight size={15}/></Link><Link href="/saved">Your saved homes <Heart size={14}/></Link></div></div>
-      <div className="footer-bottom"><span>© {new Date().getFullYear()} Stillwell. Find your own kind of home.</span><span>Demonstration homes & illustrative photography. <Link href="/about">About this site</Link></span></div>
+    <footer className="site-footer"><div className="footer-top"><Link href="/" className="wordmark">Kadel Builders<span className="brand-dot">.</span></Link><p>A little more considered.<br/>A little more like home.</p><div><Link href="/homes">Browse homes <ArrowUpRight size={15}/></Link><Link href="/saved">Your saved homes <Heart size={14}/></Link></div></div>
+      <div className="footer-bottom"><span>© {new Date().getFullYear()} Kadel Builders. Find your own kind of home.</span><span>Demonstration homes & illustrative photography. <Link href="/about">About this site</Link></span></div>
     </footer>
     <div className={`toast ${toast ? "toast-visible" : ""}`} role="status">{toast}</div>
   </SavedContext.Provider>;

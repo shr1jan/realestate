@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // The framework beta parses multipart POSTs as progressive forms before API
 // dispatch. Reject malformed uploads here so input errors remain JSON 4xx replies.
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (request.method !== "POST" || request.nextUrl.pathname !== "/api/admin/uploads") return NextResponse.next();
   const type = request.headers.get("content-type") || "";
   if (!/^multipart\/form-data;/i.test(type)) return Response.json({error:"Choose a photo to upload."},{status:415});
